@@ -22,6 +22,15 @@ Create three services that communicate with each other over HTTP. The first serv
 Install first-app with mvn
 
 ```bash
+create mysql database  
+DB Name :checklist_builder 
+Driver  : mysql
+port: 3306
+update user and password
+
+```
+
+```bash
   mvn clean install 
   cd first-app/target/docker
   java -jar first-app.jar
