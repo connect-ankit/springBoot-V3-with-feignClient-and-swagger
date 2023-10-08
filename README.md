@@ -19,7 +19,7 @@ Create three services that communicate with each other over HTTP. The first serv
 
 ## Installation
 
-Install my-project with mvn
+Install first-app with mvn
 
 ```bash
   mvn clean install 
