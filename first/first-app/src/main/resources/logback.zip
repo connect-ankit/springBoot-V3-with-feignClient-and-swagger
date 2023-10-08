@@ -1,0 +1,67 @@
+
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <provider class="net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider"/>
+            <includeCallerData>true</includeCallerData>
+            <fieldNames>
+                <!-- <message>customMessage</message> -->
+                <!-- <caller>caller</caller> -->
+                <callerClass>class_name</callerClass>
+                <callerMethod>method_name</callerMethod>
+                <callerFile>file_name</callerFile>
+                <callerLine>line_number</callerLine>
+            </fieldNames>
+            <!-- <jsonGeneratorDecorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/> -->
+            <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                <maxDepthPerThrowable>30</maxDepthPerThrowable>
+                <maxLength>2048</maxLength>
+                <shortenedClassNameLength>20</shortenedClassNameLength>
+                <exclude>sun\.reflect\..*\.invoke.*</exclude>
+                <exclude>net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
+                <exclude>\$\$FastClassByCGLIB\$\$</exclude>
+                <exclude>\$\$EnhancerBySpringCGLIB\$\$</exclude>
+                <exclude>^sun\.reflect\..*\.invoke</exclude>
+                <!-- JDK internals -->
+                <exclude>^com\.sun\.</exclude>
+                <exclude>^sun\.net\.</exclude>
+                <!-- dynamic invocation -->
+                <exclude>^net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
+                <exclude>^org\.springframework\.cglib\.</exclude>
+                <exclude>^org\.springframework\.transaction\.</exclude>
+                <exclude>^org\.springframework\.validation\.</exclude>
+                <exclude>^org\.springframework\.app\.</exclude>
+                <exclude>^org\.springframework\.aop\.</exclude>
+                <exclude>^java\.lang\.reflect\.Method\.invoke</exclude>
+                <!-- Spring plumbing -->
+                <exclude>^org\.springframework\.ws\..*\.invoke</exclude>
+                <exclude>^org\.springframework\.ws\.transport\.</exclude>
+                <exclude>^org\.springframework\.ws\.soap\.saaj\.SaajSoapMessage\.</exclude>
+                <exclude>^org\.springframework\.ws\.client\.core\.WebServiceTemplate\.</exclude>
+                <exclude>^org\.springframework\.web\.filter\.</exclude>
+                <!-- Tomcat internals -->
+                <exclude>^org\.apache\.tomcat\.</exclude>
+                <exclude>^org\.apache\.catalina\.</exclude>
+                <exclude>^org\.apache\.coyote\.</exclude>
+                <exclude>^java\.util\.concurrent\.ThreadPoolExecutor\.runWorker</exclude>
+                <exclude>^java\.lang\.Thread\.run$</exclude>
+                <!-- <evaluator class="myorg.MyCustomEvaluator"/> -->
+                <rootCauseFirst>true</rootCauseFirst>
+                <inlineHash>true</inlineHash>
+            </throwableConverter>
+        </encoder>
+    </appender>
+    <property resource="application.properties"/>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_PATH}/${logging.file.name}.log</file>
+        <append>true</append>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <provider class="net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider"/>
+	    <!--jsonGeneratorDecorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/-->
+        </encoder>
+    </appender>
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
